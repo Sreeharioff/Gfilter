@@ -16,10 +16,12 @@ instance = Instance.from_db(db)
 @instance.register
 class Media(Document):
     file_id = fields.StrField(attribute='_id')
+    file_ref = fields.StrField(allow_none=True)
     file_name = fields.StrField(required=True)
     file_size = fields.IntField(required=True)
+    file_type = fields.StrField(allow_none=True)
+    mime_type = fields.StrField(allow_none=True)
     caption = fields.StrField(allow_none=True)
-
     class Meta:
         indexes = ('$file_name', )
         collection_name = COLLECTION_NAME
@@ -28,15 +30,18 @@ async def save_file(media):
     """Save file in database"""
 
     # TODO: Find better way to get same file_id for same media to avoid duplicates
-    file_id = unpack_new_file_id(media.file_id)
+    file_id, file_ref = unpack_new_file_id(media.file_id)
     file_name = re.sub(r"@\w+|(_|\-|\.|\+)", " ", str(media.file_name))
     file_caption = re.sub(r"@\w+|(_|\-|\.|\+)", " ", str(media.caption))
     try:
         file = Media(
             file_id=file_id,
+            file_ref=file_ref,
             file_name=file_name,
             file_size=media.file_size,
-            caption=file_caption
+            file_type=media.file_type,
+            mime_type=media.mime_type,
+            caption=media.caption.html if media.caption else None,
         )
     except ValidationError:
         print(f'Saving Error - {file_name}')

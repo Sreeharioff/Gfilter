@@ -72,8 +72,8 @@ DATABASE_URL = environ.get('DATABASE_URL', "mongodb+srv://sreehariofficial03:kJw
 if len(DATABASE_URL) == 0:
     print('Error - DATABASE_URL is missing, exiting now')
     exit()
-DATABASE_NAME = environ.get('DATABASE_NAME', "ccglobalfilter")
-COLLECTION_NAME = environ.get('COLLECTION_NAME', 'ccglobalfilter_files')
+DATABASE_NAME = environ.get('DATABASE_NAME', "cinema")
+COLLECTION_NAME = environ.get('COLLECTION_NAME', 'CC_files')
 
 # Links
 SUPPORT_LINK = environ.get('SUPPORT_LINK', 'https://t.me/CinemaCompanyDiscussion')

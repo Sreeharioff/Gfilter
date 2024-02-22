@@ -16,12 +16,10 @@ instance = Instance.from_db(db)
 @instance.register
 class Media(Document):
     file_id = fields.StrField(attribute='_id')
-    file_ref = fields.StrField(allow_none=True)
     file_name = fields.StrField(required=True)
     file_size = fields.IntField(required=True)
-    file_type = fields.StrField(allow_none=True)
-    mime_type = fields.StrField(allow_none=True)
     caption = fields.StrField(allow_none=True)
+
     class Meta:
         indexes = ('$file_name', )
         collection_name = COLLECTION_NAME
@@ -30,18 +28,15 @@ async def save_file(media):
     """Save file in database"""
 
     # TODO: Find better way to get same file_id for same media to avoid duplicates
-    file_id, file_ref = unpack_new_file_id(media.file_id)
+    file_id = unpack_new_file_id(media.file_id)
     file_name = re.sub(r"@\w+|(_|\-|\.|\+)", " ", str(media.file_name))
     file_caption = re.sub(r"@\w+|(_|\-|\.|\+)", " ", str(media.caption))
     try:
         file = Media(
             file_id=file_id,
-            file_ref=file_ref,
             file_name=file_name,
             file_size=media.file_size,
-            file_type=media.file_type,
-            mime_type=media.mime_type,
-            caption=media.caption.html if media.caption else None,
+            caption=file_caption
         )
     except ValidationError:
         print(f'Saving Error - {file_name}')
@@ -132,9 +127,6 @@ def encode_file_id(s: bytes) -> str:
             r += bytes([i])
     return base64.urlsafe_b64encode(r).decode().rstrip("=")
 
-def encode_file_ref(file_ref: bytes) -> str:
-    return base64.urlsafe_b64encode(file_ref).decode().rstrip("=")
-    
 def unpack_new_file_id(new_file_id):
     decoded = FileId.decode(new_file_id)
     file_id = encode_file_id(
@@ -146,5 +138,4 @@ def unpack_new_file_id(new_file_id):
             decoded.access_hash
         )
     )
-    file_ref = encode_file_ref(decoded.file_reference)
-    return file_id, file_ref
+    return file_id

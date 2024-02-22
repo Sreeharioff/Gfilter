@@ -103,17 +103,17 @@ AUTO_DELETE = is_enabled('AUTO_DELETE', False)
 WELCOME = is_enabled('WELCOME', True)
 PROTECT_CONTENT = is_enabled('PROTECT_CONTENT', False)
 LONG_IMDB_DESCRIPTION = is_enabled("LONG_IMDB_DESCRIPTION", False)
-LINK_MODE = is_enabled("LINK_MODE", True)
+LINK_MODE = is_enabled("LINK_MODE", False)
 AUTO_FILTER = is_enabled('AUTO_FILTER', True)
 IMDB = is_enabled('IMDB', True)
 SPELL_CHECK = is_enabled("SPELL_CHECK", True)
 SHORTLINK = is_enabled('SHORTLINK', True)
 
-PAYMENT_QR = environ.get('PAYMENT_QR', 'http://graph.org/file/cacbbea472e5a48ce0d64.jpg') #telegraph link of your QR code , make from @professormp_bot
+PAYMENT_QR = environ.get('PAYMENT_QR', 'https://graph.org/file/b0fb20d8c6d51ffb1a318.jpg') #telegraph link of your QR code , make from @professormp_bot
 
 # for stream
 IS_STREAM = is_enabled('IS_STREAM', False) #true if you want stream feature active in your bot
-BIN_CHANNEL = environ.get("BIN_CHANNEL", "-1001523404648") #if is_stream = true then add a channel id ex: -10026393639
+BIN_CHANNEL = environ.get("BIN_CHANNEL", "-1001702976018") #if is_stream = true then add a channel id ex: -10026393639
 if len(BIN_CHANNEL) == 0:
     print('Error - BIN_CHANNEL is missing, exiting now')
     exit()

@@ -34,7 +34,7 @@ class Database:
     }
     
     def __init__(self):
-        self.col = mydb.users
+        self.col = mydb.userz
         self.grp = mydb.groups
         self.users = mydb.uersz
 
@@ -106,11 +106,11 @@ class Database:
         await self.grp.delete_many({'id': int(grp_id)})
 
     async def get_banned(self):
-        users = self.col.find({'ban_status.is_banned': True})
+        userz = self.col.find({'ban_status.is_banned': True})
         chats = self.grp.find({'chat_status.is_disabled': True})
         b_chats = [chat['id'] async for chat in chats]
-        b_users = [user['id'] async for user in users]
-        return b_users, b_chats
+        b_userz = [user['id'] async for user in userz]
+        return b_userz, b_chats
     
     async def add_chat(self, chat, title):
         chat = self.new_group(chat, title)
